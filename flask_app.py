@@ -8,6 +8,10 @@ import sqlite3
 # Import date
 import datetime
 
+# Import os
+import os
+current_directory = os.path.dirname(os.path.abspath(__file__)) + "/"
+
 # Server routes
 # (1) This will return a webpage
 @app.route("/")
@@ -23,7 +27,8 @@ def get_test_message():
 @app.route('/search/<searchTerm>')
 def get_search_results(searchTerm):
     # Record search
-    conn = sqlite3.connect('private/searchHistory.db')
+    global current_directory
+    conn = sqlite3.connect(current_directory + '/private/searchHistory.db')
     cursor = conn.cursor()
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
     sql_command = 'insert into history (searchTerm,timestamp) values ("' + searchTerm + '","' + timestamp + '");'
@@ -46,7 +51,8 @@ def get_search_results(searchTerm):
 @app.route('/history')
 def get_history():
     toReturn = ""
-    conn = sqlite3.connect('private/searchHistory.db')
+    global current_directory
+    conn = sqlite3.connect(current_directory + 'private/searchHistory.db')
     cursor = conn.cursor()
     historyData = cursor.execute("select * from history;")
     for row in historyData:
