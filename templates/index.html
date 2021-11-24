@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>Word Searching</title>
+    <link href="/static/css/main.css" rel="stylesheet">
+  </head>
+  <body>
+    <h1>Word Searching</h1>
+    <p>This page allows you to search for words containing the given input</p>
+    <input type="text" id="textInput">
+    <button onclick="buttonClicked()">Click To Send</button>
+    <p id="results"></p>
+    <script>
+      function buttonClicked() {
+        var textInputData = document.getElementById("textInput").value;
+        console.log("Request Data: " + textInputData);
+        sendData(textInputData);
+      }
+      function sendData(textData) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if(this.readyState == 4 && this.status == 200) {
+            console.log("Response Data: " + this.responseText);
+            document.getElementById("results").innerHTML = this.responseText;
+           }
+        };
+        xhttp.open("GET", "search/" + textData, true);
+        xhttp.send();
+      }
+    </script>
+  </body>
+</html>
